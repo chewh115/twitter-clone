@@ -1,6 +1,6 @@
 from django.urls import path
-from tweet import views
+from . import views
 
-urlspatterns =[
+urlpatterns =[
     path('', views.tweetindex, "tweethome")
 ]
