@@ -1,9 +1,9 @@
 from django.shortcuts import render, reverse, HttpResponseRedirect, redirect
 from django.contrib.auth import login, logout, authenticate
-from . import LoginForm
+from .forms import LoginForm
 
 # Create your views here.
-def login_view(request):
+def loginview(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
