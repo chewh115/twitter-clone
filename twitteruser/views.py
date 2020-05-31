@@ -34,5 +34,7 @@ def signup(request):
 
 
 def userdetail(request, id):
-    user = TwitterUser.objects.get(id=id)
-    return render(request, 'userdetail.html', {'user': user})
+    user_info = {}
+    user_info['user'] = TwitterUser.objects.get(id=id)
+    user_info['tweets'] = Tweet.objects.filter(author_id=id)
+    return render(request, 'userdetail.html', user_info)
