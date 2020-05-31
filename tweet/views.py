@@ -17,3 +17,8 @@ def createtweet(request):
             return HttpResponseRedirect(reverse('home'))
     form = TweetForm()
     return render(request, 'createtweet.html', {'form': form})
+
+
+def tweetdetail(request, id):
+    tweet = Tweet.objects.get(id=id)
+    return render(request, 'tweetdetail.html', {'tweet': tweet})

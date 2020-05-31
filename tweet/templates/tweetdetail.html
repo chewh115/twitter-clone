@@ -1,0 +1,14 @@
+<header>
+  <a href="{% url 'logout'%}">Logout</a>
+  <a href="{% url 'home' %}">Home</a>
+  <a href="{% url 'createtweet' %}">Tweet</a>
+  <a href="">Notifications: *notif number here*</a>
+  <a href="{% url 'userdetail' id=request.user.id %}">My Profile</a>
+</header>
+
+<p>
+  {{tweet.author.display_name}}
+  <a href="{% url 'userdetail' id=tweet.author_id%}">@{{tweet.author}}</a>
+  {{tweet.time_tweeted}}
+</p>
+<p>{{tweet.tweet}}</p>
