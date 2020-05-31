@@ -9,7 +9,8 @@ def index(request):
     if request.user.is_authenticated:
         context = {}
         context['user_info'] = request.user
-        tweets = Tweet.objects.filter
+        context['tweets'] = Tweet.objects.filter(author_id=request.user.id)
+        tweet_feed = Tweet.objects.filter
         return render(request, 'index.html', context)
     return redirect('/login/')
 

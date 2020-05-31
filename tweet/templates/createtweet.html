@@ -1,11 +1,8 @@
-<header>
-  <a href="{% url 'home' %}">Home</a>
-  <a href="">Notifications: *notif number here*</a>
-  <a href="{% url 'userdetail' id=request.user.id %}">My Profile</a>
-</header>
+{% extends 'base.html' %}{% block content %}
 
 <h1>What do you want to tweet?</h1>
 <form action="" , method="POST">
   {% csrf_token %} {{ form.as_p }}
   <input type="submit" value="Tweet" />
 </form>
+{% endblock %}
