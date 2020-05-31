@@ -7,8 +7,13 @@
     <a href="{%url 'tweetdetail' id=tweet.id%}">{{tweet.time_tweeted}}</a>
   </p>
   <p>{{tweet.tweet}}</p>
-  {% endfor %} {% else %}
+  {% endfor %} {% else %} {%if user == request.user%}
+  <p>
+    You haven't tweeted yet. Have something to say?
+    <a href="{%url 'createtweet'%}">Tweet it!</a>
+  </p>
+  {% else %}
   <p>This user hasn't tweeted yet!</p>
-  {% endif %}
+  {% endif %} {% endif %}
 </div>
 {% endblock %}

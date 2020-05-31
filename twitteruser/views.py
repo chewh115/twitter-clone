@@ -9,7 +9,7 @@ def index(request):
     if request.user.is_authenticated:
         context = {}
         context['user_info'] = request.user
-        context['tweets'] = Tweet.objects.filter(author_id=request.user.id)
+        context['tweets'] = Tweet.objects.filter(author_id=request.user.id).order_by('-time_tweeted')
         tweet_feed = Tweet.objects.filter
         return render(request, 'index.html', context)
     return redirect('/login/')
@@ -37,5 +37,5 @@ def signup(request):
 def userdetail(request, id):
     user_info = {}
     user_info['user'] = TwitterUser.objects.get(id=id)
-    user_info['tweets'] = Tweet.objects.filter(author_id=id)
+    user_info['tweets'] = Tweet.objects.filter(author_id=id).order_by('-time_tweeted')
     return render(request, 'userdetail.html', user_info)

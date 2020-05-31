@@ -13,7 +13,7 @@
     <div id="userinfobox">
       <p>{{user.display_name}} @{{user.username}}</p>
       <p>Tweets: {{tweets|length}}</p>
-      <p>Following:</p>
+      <p>Following: {{request.user.following|length}}</p>
       <a href="{% url 'logout'%}">Logout</a>
     </div>
 

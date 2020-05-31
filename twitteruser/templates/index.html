@@ -1,6 +1,21 @@
 {% extends 'base.html' %}{% block content %}
 <h1>
-  Hello {{user.display_name}}
+  Your Twitter Feed
 </h1>
-<div class="tweetlist"><h3>Tweets</h3></div>
-{% endblock %}
+{% if tweets%}
+<div class="tweetlist">
+  {% for tweet in tweets %}
+  <p>
+    {{tweet.author.display_name}}
+    <a href="{% url 'userdetail' id=tweet.author_id%}">@{{tweet.author}}</a>
+    <a href="{%url 'tweetdetail' id=tweet.id%}">{{tweet.time_tweeted}}</a>
+  </p>
+  <p>{{tweet.tweet}}</p>
+  {% endfor %}
+</div>
+{% else %}
+<p>
+  You have no tweets to view. Have something to say?
+  <a href="{% url 'createtweet' %}">Tweet it out!</a>
+</p>
+{% endif %} {% endblock %}
