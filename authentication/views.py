@@ -20,6 +20,6 @@ def loginview(request):
     return render(request, 'login.html', {'form': form})
 
 
-def logoutview(reqest):
-    logout(reqest)
+def logoutview(request):
+    logout(request)
     return HttpResponseRedirect(reverse('home'))
