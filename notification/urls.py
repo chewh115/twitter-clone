@@ -2,5 +2,5 @@ from django.urls import path
 from notification import views
 
 urlpatterns = [
-    path('', views.notificationindex, "notification-index")
+    path('notifications/<str:username>/', views.notifications, "notifications")
 ]
