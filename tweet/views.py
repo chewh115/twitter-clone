@@ -19,10 +19,10 @@ def createtweet(request):
                     author = request.user
                 )
                 new_tweet.save()
-                to_notify = re.findall("\@(\w*)\b", tweet_data['tweet'])
+                to_notify = re.findall(r"\@(\w*)\b", tweet_data['tweet'])
                 for user in to_notify:
                     new_notif = Notification.objects.create(
-                        tweet = Tweet.objects.get(id=new_tweet.id),
+                        tweet = new_tweet,
                         notified_user = TwitterUser.objects.get(username=user),
                         viewed=False
                     )
