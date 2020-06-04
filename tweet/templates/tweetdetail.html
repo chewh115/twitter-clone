@@ -1,9 +1,8 @@
-
-
+{% extends 'base.html' %} {% block content %}
 <p>
   {{tweet.author.display_name}}
-  <a href="{% url 'userdetail' username=tweet.author%}">@{{tweet.author}}</a>
+  <a href="">@{{tweet.author}}</a>
   {{tweet.time_tweeted}}
 </p>
 <p>{{tweet.tweet}}</p>
-
+{% endblock %}

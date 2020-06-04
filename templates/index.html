@@ -7,7 +7,7 @@
   {% for tweet in tweets %}
   <p>
     {{tweet.author.display_name}}
-    <a href="{% url 'userdetail' id=tweet.author_id%}">@{{tweet.author}}</a>
+    <a href="{% url 'userdetail' username=tweet.author %}">@{{tweet.author}}</a>
     <a href="{%url 'tweetdetail' id=tweet.id%}">{{tweet.time_tweeted}}</a>
   </p>
   <p>{{tweet.tweet}}</p>

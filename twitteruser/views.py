@@ -9,8 +9,8 @@ def index(request):
     if request.user.is_authenticated:
         context = {}
         context['user_info'] = request.user
-        context['tweets'] = Tweet.objects.filter(author_id=request.user.id).order_by('-time_tweeted')
-        tweet_feed = Tweet.objects.filter
+        context['tweets'] = Tweet.objects.filter(author__in=request.user.following.all()).order_by(
+            '-time_tweeted')
         return render(request, 'index.html', context)
     return redirect('/login/')
 
@@ -27,6 +27,7 @@ def signup(request):
             )
             user = TwitterUser.objects.last()
             user.set_password(user_info['password'])
+            user.following.add(user)
             user.save()
             login(request, user)
             return HttpResponseRedirect(reverse('home'))
@@ -34,8 +35,28 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
-def userdetail(request, id):
+def sidebar():
+    pass
+
+def userdetail(request, username):
     user_info = {}
-    user_info['user'] = TwitterUser.objects.get(id=id)
-    user_info['tweets'] = Tweet.objects.filter(author_id=id).order_by('-time_tweeted')
+    user = TwitterUser.objects.get(username=username)
+    user_info['user'] = user
+    user_info['tweets'] = Tweet.objects.filter(author_id=user.id).order_by('-time_tweeted')
     return render(request, 'userdetail.html', user_info)
+
+
+def follow(request, username):
+    active_user = TwitterUser.objects.get(username=request.user.username)
+    follow_user = TwitterUser.objects.get(username=username)
+    active_user.following.add(follow_user.id)
+    active_user.save()
+    return HttpResponseRedirect(reverse('userdetail', args=(username,)))
+
+
+def unfollow(request, username):
+    active_user = TwitterUser.objects.get(username=request.user.username)
+    unfollow_user = TwitterUser.objects.get(username=username)
+    active_user.follow.remove(unfollow_user.id)
+    active_user.save()
+    return HttpResponseRedirect(reverse('userdetail', args=(username,)))
