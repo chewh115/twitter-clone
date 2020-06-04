@@ -23,4 +23,4 @@ from authentication.urls import urlpatterns as authenticationurls
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
-urlpatterns += twitteruserurls + tweeturls + notificationurls + authenticationurls
+urlpatterns += authenticationurls + notificationurls + twitteruserurls + tweeturls

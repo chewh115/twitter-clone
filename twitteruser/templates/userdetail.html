@@ -3,7 +3,7 @@
   <p>{{user.display_name}} @{{user.username}}</p>
   <p>Tweets: {{tweets|length}}</p>
   <p>Following: {{user.following.all|length}}</p>
-  {% if user != request.user %} {% if user in request.user.following.all %}
+  {% if user != request.user and request.user.is_authenticated %} {% if user in request.user.following.all %}
   <a href="{% url 'unfollow' username=user.username%}">Unfollow</a>
   {% else %}
   <a href="{% url 'follow' username=user.username%}">Follow</a>
