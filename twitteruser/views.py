@@ -1,5 +1,6 @@
-from django.shortcuts import render, reverse, HttpResponseRedirect, redirect
+from django.shortcuts import render, reverse, HttpResponseRedirect, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
+from django.views.generic import DetailView
 from .forms import SignupForm
 from .models import TwitterUser
 from tweet.models import Tweet
@@ -35,28 +36,38 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
-def sidebar():
-    pass
+class UserDetail(DetailView):
+    model = TwitterUser
+    template_name = 'userdetail.html'
 
-def userdetail(request, username):
-    user_info = {}
-    user = TwitterUser.objects.get(username=username)
-    user_info['user'] = user
-    user_info['tweets'] = Tweet.objects.filter(author_id=user.id).order_by('-time_tweeted')
-    return render(request, 'userdetail.html', user_info)
+    def get_queryset(self):
+        self.user = get_object_or_404(TwitterUser, id=self.kwargs['pk'])
+        return super().get_queryset()
+    
 
-
-def follow(request, username):
-    active_user = TwitterUser.objects.get(username=request.user.username)
-    follow_user = TwitterUser.objects.get(username=username)
-    active_user.following.add(follow_user.id)
-    active_user.save()
-    return HttpResponseRedirect(reverse('userdetail', args=(username,)))
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.user
+        context['tweets'] = Tweet.objects.filter(author_id=self.user.id).order_by('-time_tweeted')
+        return context
+    
 
 
-def unfollow(request, username):
-    active_user = TwitterUser.objects.get(username=request.user.username)
-    unfollow_user = TwitterUser.objects.get(username=username)
-    active_user.following.remove(unfollow_user.id)
-    active_user.save()
-    return HttpResponseRedirect(reverse('userdetail', args=(username,)))
+def follow(request, pk):
+    if request.user.is_authenticated:
+        active_user = TwitterUser.objects.get(pk=request.user.pk)
+        follow_user = TwitterUser.objects.get(pk=pk)
+        active_user.following.add(follow_user.id)
+        active_user.save()
+        return HttpResponseRedirect(reverse('userdetail', args=(pk,)))
+    return redirect('/login/')
+
+
+def unfollow(request, pk):
+    if request.user.is_authenticated:
+        active_user = TwitterUser.objects.get(pk=request.user.pk)
+        unfollow_user = TwitterUser.objects.get(pk=pk)
+        active_user.following.remove(unfollow_user.id)
+        active_user.save()
+        return HttpResponseRedirect(reverse('userdetail', args=(pk,)))
+    return redirect('/login/')

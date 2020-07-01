@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <p>
   {{tweet.author.display_name}}
-  <a href="">@{{tweet.author}}</a>
+  <a href="{% url 'userdetail' pk=tweet.author_id%}">@{{tweet.author}}</a>
   {{tweet.time_tweeted}}
 </p>
 <p>{{tweet.tweet}}</p>

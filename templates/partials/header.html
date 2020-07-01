@@ -5,9 +5,9 @@
   <a href="{% url 'notifs' %}">
     <button>Notifications: {{notifications|length}}</button>
   </a>
-  {% endif %}
-  <a href="{% url 'userdetail' username=request.user.username%}">
+  <a href="{% url 'userdetail' pk=request.user.pk%}">
     <button>My Profile</button>
   </a>
   <a href="{% url 'logout'%}"><button>Logout</button></a>
+  {% endif %}
 </header>
