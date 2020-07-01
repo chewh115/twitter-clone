@@ -1,4 +1,5 @@
 from django.shortcuts import render, reverse, HttpResponseRedirect, redirect
+from django.views import View
 from .forms import TweetForm
 from .models import Tweet
 from datetime import datetime
@@ -7,31 +8,38 @@ from twitteruser.models import TwitterUser
 import re
 
 # Create your views here.
-def createtweet(request):
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            form = TweetForm(request.POST)
-            if form.is_valid():
-                tweet_data = form.cleaned_data
-                new_tweet = Tweet.objects.create(
-                    tweet = tweet_data['tweet'],
-                    time_tweeted = datetime.now(),
-                    author = request.user
-                )
-                new_tweet.save()
-                to_notify = re.findall(r"\@(\w*)\b", tweet_data['tweet'])
-                for user in to_notify:
-                    new_notif = Notification.objects.create(
-                        tweet = new_tweet,
-                        notified_user = TwitterUser.objects.get(username=user),
-                        viewed=False
-                    )
-                    new_notif.save()
-                return HttpResponseRedirect(reverse('home'))
-        form = TweetForm()
-        return render(request, 'createtweet.html', {'form': form})
-    return redirect('/login/')
 
+class CreateTweetView(View):
+    form = TweetForm
+    initial = {'key': 'value'}
+    template_name='createtweet.html'
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return render(request, self.template_name, {'form': self.form})
+        else:
+            return redirect('/login/')
+
+    def post(self, request):
+        form = self.form(request.POST)
+        if form.is_valid():
+            tweet_data = form.cleaned_data
+            new_tweet = Tweet.objects.create(
+                tweet = tweet_data['tweet'],
+                time_tweeted = datetime.now(),
+                author = request.user
+            )
+            new_tweet.save()
+            to_notify = re.findall(r"\@(\w*)\b", tweet_data['tweet'])
+            for user in to_notify:
+                new_notif = Notification.objects.create(
+                    tweet = new_tweet,
+                    notified_user = TwitterUser.objects.get(username=user),
+                    viewed=False
+                )
+                new_notif.save()
+            return HttpResponseRedirect(reverse('home'))
+        return render(request, self.template_name, {'form': form})
 
 def tweetdetail(request, id):
     tweet = Tweet.objects.get(id=id)
