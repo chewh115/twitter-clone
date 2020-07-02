@@ -42,9 +42,6 @@ class CreateTweetView(View):
             return HttpResponseRedirect(reverse('home'))
         return render(request, self.template_name, {'form': form})
 
-def tweetdetail(request, id):
-    tweet = Tweet.objects.get(id=id)
-    return render(request, 'tweetdetail.html', {'tweet': tweet})
 
 class TweetDetail(DetailView):
     template_name = 'tweetdetail.html'
