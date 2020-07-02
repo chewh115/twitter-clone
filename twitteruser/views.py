@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from .forms import SignupForm
 from .models import TwitterUser
 from tweet.models import Tweet
+from notification.models import Notification
 
 # Create your views here.
 def index(request):
@@ -11,6 +12,7 @@ def index(request):
         context['user_info'] = request.user
         context['tweets'] = Tweet.objects.filter(author__in=request.user.following.all()).order_by(
             '-time_tweeted')
+        context['notifications'] = Notification.objects.filter(notified_user=request.user, viewed=False)
         return render(request, 'index.html', context)
     return redirect('/login/')
 
@@ -43,6 +45,7 @@ def userdetail(request, username):
     user = TwitterUser.objects.get(username=username)
     user_info['user'] = user
     user_info['tweets'] = Tweet.objects.filter(author_id=user.id).order_by('-time_tweeted')
+    user_info['notifications'] = Notification.objects.filter(notified_user=request.user, viewed=False)
     return render(request, 'userdetail.html', user_info)
 
 
