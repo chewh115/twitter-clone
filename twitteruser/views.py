@@ -1,5 +1,6 @@
 from django.shortcuts import render, reverse, HttpResponseRedirect, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
+from django.views import View
 from django.views.generic import DetailView
 from .forms import SignupForm
 from .models import TwitterUser
@@ -34,6 +35,33 @@ def signup(request):
             return HttpResponseRedirect(reverse('home'))
     form = SignupForm()
     return render(request, 'signup.html', {'form': form})
+
+
+class SignupFormView(View):
+    form = SignupForm
+    initial = {'key': 'value'}
+    template_name='signup.html'
+
+    def get(self, request):
+        return render(request, self.template_name, {'form': self.form})
+
+    
+    def post(self, request):
+        form = self.form(request.POST)
+        if form.is_valid():
+            user_info = form.cleaned_data
+            TwitterUser.objects.create(
+                username = user_info['username'],
+                display_name = user_info['display_name'],
+                age = user_info['age']
+            )
+            user = TwitterUser.objects.last()
+            user.set_password(user_info['password'])
+            user.following.add(user)
+            user.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse('home'))
+        return render(request, self.template_name, {'form': form})
 
 
 class UserDetail(DetailView):
