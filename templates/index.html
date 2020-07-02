@@ -8,7 +8,7 @@
   <p>
     {{tweet.author.display_name}}
     <a href="{% url 'userdetail' pk=tweet.author_id %}">@{{tweet.author}}</a>
-    <a href="{%url 'tweetdetail' id=tweet.id%}">{{tweet.time_tweeted}}</a>
+    <a href="{%url 'tweetdetail' pk=tweet.pk%}">{{tweet.time_tweeted}}</a>
   </p>
   <p>{{tweet.tweet}}</p>
   {% endfor %}

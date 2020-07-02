@@ -1,5 +1,6 @@
-from django.shortcuts import render, reverse, HttpResponseRedirect, redirect
+from django.shortcuts import render, reverse, HttpResponseRedirect, redirect, get_object_or_404
 from django.views import View
+from django.views.generic import DetailView
 from .forms import TweetForm
 from .models import Tweet
 from datetime import datetime
@@ -44,3 +45,20 @@ class CreateTweetView(View):
 def tweetdetail(request, id):
     tweet = Tweet.objects.get(id=id)
     return render(request, 'tweetdetail.html', {'tweet': tweet})
+
+class TweetDetail(DetailView):
+    template_name = 'tweetdetail.html'
+    model = Tweet
+
+    def get_queryset(self):
+        self.tweet = get_object_or_404(Tweet, id=self.kwargs['pk'])
+        return super().get_queryset()
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tweet'] = self.tweet
+        return context
+    
+
+
