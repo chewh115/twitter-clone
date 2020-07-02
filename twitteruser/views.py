@@ -45,7 +45,8 @@ def userdetail(request, username):
     user = TwitterUser.objects.get(username=username)
     user_info['user'] = user
     user_info['tweets'] = Tweet.objects.filter(author_id=user.id).order_by('-time_tweeted')
-    user_info['notifications'] = Notification.objects.filter(notified_user=request.user, viewed=False)
+    if request.user.is_authenticated:
+        user_info['notifications'] = Notification.objects.filter(notified_user=request.user, viewed=False)
     return render(request, 'userdetail.html', user_info)
 
 
