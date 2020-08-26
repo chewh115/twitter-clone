@@ -10,19 +10,5 @@
   {% endif %} {% endif %}
 </div>
 <div class="tweetfeed">
-  {% if tweets %} {% for tweet in tweets%}
-  <p>
-    {{tweet.author.display_name}} @{{tweet.author}}
-    <a href="{%url 'tweetdetail' id=tweet.id%}">{{tweet.time_tweeted}}</a>
-  </p>
-  <p>{{tweet.tweet}}</p>
-  {% endfor %} {% else %} {%if user == request.user%}
-  <p>
-    You haven't tweeted yet. Have something to say?
-    <a href="{%url 'createtweet'%}">Tweet it!</a>
-  </p>
-  {% else %}
-  <p>This user hasn't tweeted yet!</p>
-  {% endif %} {% endif %}
-</div>
+  {% include 'tweetfeed.html'%}
 {% endblock %} {% include 'sidebar.html' %}

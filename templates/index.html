@@ -2,20 +2,5 @@
 <h1>
   Your Twitter Feed
 </h1>
-{% if tweets%}
-<div class="tweetlist">
-  {% for tweet in tweets %}
-  <p>
-    {{tweet.author.display_name}}
-    <a href="{% url 'userdetail' username=tweet.author %}">@{{tweet.author}}</a>
-    <a href="{%url 'tweetdetail' id=tweet.id%}">{{tweet.time_tweeted}}</a>
-  </p>
-  <p>{{tweet.tweet}}</p>
-  {% endfor %}
-</div>
-{% else %}
-<p>
-  You have no tweets to view. Have something to say?
-  <a href="{% url 'createtweet' %}">Tweet it out!</a>
-</p>
-{% endif %} {% endblock %}
+{% include 'tweetfeed.html' %}
+{% endblock %}
