@@ -1,7 +1,8 @@
 {% extends 'base.html' %} {% block content %} {% if notifications %} <br />
 {% for notification in notifications %}
-<p><a href="{% url 'userdetail' username=notification.tweet.author%}">@{{notification.tweet.author}}</a> <a href="{% url 'tweetdetail' id=notification.tweet.id%}">{{notification.tweet.time_tweeted}}</a></p>
+<p><a href="{% url 'userdetail' username=notification.tweet.author%}">@{{notification.tweet.author}}</a></p>
 <p>{{notification.tweet.tweet}}</p>
+<a href="{% url 'tweetdetail' id=notification.tweet.id%}">{{notification.tweet.time_tweeted}}</a>
 {% endfor %} {% else %}
 <p>You don't have any notifications</p>
 {% endif %} {% endblock %}

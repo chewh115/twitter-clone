@@ -1,0 +1,20 @@
+{% if tweets%}
+<div id='tweetlist'>
+  {% for tweet in tweets %}
+  <div class='tweet'
+  style='margin-top: 30px;'>
+    <p class='font-weight-bold'>
+      {{tweet.author.display_name}}
+      <a href="{% url 'userdetail' username=tweet.author %}">@{{tweet.author}}</a>
+    </p>
+    <p>{{tweet.tweet}}</p>
+    <a href="{%url 'tweetdetail' id=tweet.id%}">{{tweet.time_tweeted}}</a>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+<p>
+  You have no tweets to view. Have something to say?
+  <a href="{% url 'createtweet' %}">Tweet it out!</a>
+</p>
+{% endif %}

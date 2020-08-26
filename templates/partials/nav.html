@@ -1,0 +1,27 @@
+<nav class='navbar navbar-expand-md navbar-light bg-light'>
+  <div class='navbar-nav'>
+    <a class='nav-item nav-link' href="{% url 'home' %}">
+      Home
+    </a>
+    {% if request.user.is_authenticated %}
+      <a class='nav-item nav-link' href="{% url 'createtweet' %}">
+        Tweet
+      </a>
+      <a class='nav-item nav-link' href="{% url 'notifs' %}">
+        Notifications: {{notifications|length}}
+      </a>
+      <a
+        class='nav-item nav-link'
+        href="{% url 'userdetail' username=request.user.username%}">
+          My Profile
+      </a>
+      <a class='nav-item nav-link' href="{% url 'logout'%}">
+        Logout
+      </a>
+    {% else %}
+      <a class='nav-item nav-link' href="{% url 'login' %}">
+        Login
+      </a>
+    </div>
+  {% endif %}
+</nav>

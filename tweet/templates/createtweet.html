@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
-<h1>What do you want to tweet?</h1>
+<h2>What do you want to tweet?</h2>
 <form action="" , method="POST">
   {% csrf_token %} {{ form.as_p }}
-  <input type="submit" value="Tweet" />
+  <input type="submit" class='btn btn-outline-primary' value="Tweet" />
 </form>
 {% endblock %}
