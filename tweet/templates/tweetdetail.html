@@ -1,8 +1,14 @@
 {% extends 'base.html' %} {% block content %}
-<p>
-  {{tweet.author.display_name}}
-  <a href="">@{{tweet.author}}</a>
-  {{tweet.time_tweeted}}
-</p>
-<p>{{tweet.tweet}}</p>
+<div>
+  <p>
+    {{tweet.author.display_name}}
+    <a href="">@{{tweet.author}}</a>
+  </p>
+  <p>
+    {{tweet.tweet}}
+  </p>
+  <p>
+    {{tweet.time_tweeted}}
+  </p>
+<div>
 {% endblock %}
